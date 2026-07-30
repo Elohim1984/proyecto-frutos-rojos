@@ -12,12 +12,11 @@ const JWT_SECRET = 'pakazita_secret_key_2026';
 
 // --- Conexión a PostgreSQL en Render ---
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
-
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -25,8 +24,6 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false
   }
-});
-
 module.exports = pool;
 
 // Ruta base (Muestra la tienda web)
