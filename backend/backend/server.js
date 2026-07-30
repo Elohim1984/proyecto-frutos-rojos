@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-app.use(cors());
+app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(express.json());
 
 const JWT_SECRET = 'pakazita_secret_key_2026';
@@ -122,7 +122,7 @@ app.get('/api/pedidos', (req, res) => {
   });
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor PakaZita en http://localhost:${PORT}`);
+    console.log(`Servidor PakaZita activo en puerto ${PORT}`);
 });
