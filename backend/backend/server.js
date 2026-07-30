@@ -20,10 +20,12 @@ const pool = new Pool({
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
 module.exports = pool;
 
 // Ruta base (Muestra la tienda web)
@@ -31,13 +33,9 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/frontend/index.html');
 });
 // --- RUTAS DE PRODUCTOS ---
-app.get('/api/productos', (req, res) => {
-  db.query('SELECT * FROM productos', (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
-  });
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
-
 // --- RUTAS DE USUARIOS ---
 // Registro
 app.post('/api/usuarios/registro', async (req, res) => {
