@@ -15,8 +15,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 const JWT_SECRET = 'pakazita_secret_key_2026';
 
 // --- Conexión a PostgreSQL en Render ---
-const { Pool } = require('pg');
-
+// --- Conexión a PostgreSQL en Render ---
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -28,22 +27,21 @@ const pool = new Pool({
 
 module.exports = pool;
 
-module.exports = pool;
-
 // --- Ruta base (Muestra la tienda web completa) ---
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
-});git add .
+});
+
 // --- RUTAS DE PRODUCTOS ---
 app.get('/api/productos', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM productos');
         res.json(result.rows);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error(err);
+        res.status(500).send('Error en el servidor');
     }
 });
-
 // --- Configuración del Puerto para Render ---
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
