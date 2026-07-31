@@ -39,3 +39,7 @@ app.get('/api/productos', async (req, res) => {
         res.status(500).json({ error: 'Error al obtener los productos' });
     }
 });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
+});
