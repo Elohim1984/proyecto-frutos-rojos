@@ -24,7 +24,7 @@ const pool = new Pool({
 
 module.exports = pool;
 
-// --- Ruta base (Muestra la tienda web) ---
+// --- Ruta base (Muestra la tienda web completa) ---
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
@@ -37,6 +37,7 @@ app.get('/api/productos', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
 // --- Configuración del Puerto para Render ---
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
