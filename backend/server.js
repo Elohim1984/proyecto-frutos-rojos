@@ -15,11 +15,13 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 const JWT_SECRET = 'pakazita_secret_key_2026';
 
 // --- Conexión a PostgreSQL en Render ---
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
+// Verificar conexión a PostgreSQL
+pool.connect((err, client, release) => {
+  if (err) {
+    return console.error('Error conectando a PostgreSQL:', err.stack);
+  }
+  console.log('¡Conectado exitosamente a PostgreSQL!');
+  release();
 });
 
 module.exports = pool;
