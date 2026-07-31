@@ -28,15 +28,15 @@ module.exports = pool;
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
-
 // --- RUTAS DE PRODUCTOS ---
-app.get('/api/productos', (req, res) => {
-    pool.query('SELECT * FROM productos', (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results.rows);
-    });
+app.get('/api/productos', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM productos');
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
-
 // --- Configuración del Puerto para Render ---
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
