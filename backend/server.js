@@ -15,14 +15,11 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 const JWT_SECRET = 'pakazita_secret_key_2026';
 
 // --- Conexión a PostgreSQL en Render ---
-// --- Conexión a PostgreSQL en Render ---
-const { Pool } = require('pg');
-
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 module.exports = pool;
@@ -35,15 +32,10 @@ app.get('/', (req, res) => {
 // --- RUTAS DE PRODUCTOS ---
 app.get('/api/productos', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM productos');
-        res.json(result.rows);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error en el servidor');
+        const resultado = await pool.query('SELECT * FROM productos');
+        res.json(resultado.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener los productos' });
     }
-});
-// --- Configuración del Puerto para Render ---
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Servidor PakaZita activo en puerto ${PORT}`);
 });
