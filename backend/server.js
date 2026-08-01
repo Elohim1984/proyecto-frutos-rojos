@@ -24,8 +24,11 @@ const pool = new Pool({
 
 // Ruta Principal (Tienda / PakaZita)
 app.get('/', (req, res) => {
-    // Si tu index principal está en frontend, cámbialo a 'frontend', 'index.html'
-    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+    res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
+});
+
+// Y haz lo mismo con los archivos estáticos de frontend si los tienes configurados así:
+app.use(express.static(path.join(__dirname, '../frontend')));
 });
 
 // Ruta del Panel de Administración
