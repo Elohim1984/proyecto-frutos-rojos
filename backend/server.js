@@ -6,13 +6,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 1. Archivos estáticos de la carpeta Public (para admin.html)
-app.use(express.static(path.join(__dirname, 'Public')));
+// Archivos estáticos de la carpeta frontend y Public
+app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname, '../Public')));
 
-// 2. Archivos estáticos de la carpeta frontend (si tu tienda está ahí)
-app.use(express.static(path.join(__dirname, 'frontend')));
-
-// Configuración de la base de datos PostgreSQL (Render o local)
+// Configuración de la base de datos PostgreSQL
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
@@ -27,13 +25,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
-// Y haz lo mismo con los archivos estáticos de frontend si los tienes configurados así:
-app.use(express.static(path.join(__dirname, '../frontend')));
-});
-
 // Ruta del Panel de Administración
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Public', 'admin.html'));
+    res.sendFile(path.join(__dirname, '../Public', 'admin.html'));
 });
 
 // Estadísticas generales para el Panel
