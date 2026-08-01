@@ -6,20 +6,34 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Archivos estáticos (para que lea tu HTML, CSS e imágenes)
-app.use(express.static(path.join(__dirname, 'public')));
+// 1. Archivos estáticos de la carpeta Public (para admin.html)
+app.use(express.static(path.join(__dirname, 'Public')));
 
-// Configuración de tu base de datos PostgreSQL (Render o local)
+// 2. Archivos estáticos de la carpeta frontend (si tu tienda está ahí)
+app.use(express.static(path.join(__dirname, 'frontend')));
+
+// Configuración de la base de datos PostgreSQL (Render o local)
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
 
 // ==========================================
-// RUTAS DEL ADMINISTRADOR
+// RUTAS DE LA APLICACIÓN Y ADMINISTRADOR
 // ==========================================
 
-// 1. Estadísticas generales y resúmenes del Panel
+// Ruta Principal (Tienda / PakaZita)
+app.get('/', (req, res) => {
+    // Si tu index principal está en frontend, cámbialo a 'frontend', 'index.html'
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
+
+// Ruta del Panel de Administración
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Public', 'admin.html'));
+});
+
+// Estadísticas generales para el Panel
 app.get('/api/admin/stats', async (req, res) => {
     try {
         const totalClientes = await pool.query('SELECT COUNT(*) FROM clientes');
@@ -56,12 +70,6 @@ app.get('/api/admin/stats', async (req, res) => {
     }
 });
 
-// 2. Ruta para abrir la vista del Panel de Administración en el navegador
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
-// Iniciar servidor en el puerto asignado por la plataforma o el 3000
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor de PakaZita corriendo en el puerto ${PORT}`);
